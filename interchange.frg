@@ -4,6 +4,8 @@
 //     x: lone Int,
 //     y: lone Int,
 // }
+option no_overflow true
+option run_sterling "segment_vis.js"
 
 sig Segment {
     x1: one Int,
@@ -48,7 +50,51 @@ pred segmentLength[minLength: Int, maxLength: Int] {
     }
 }
 
+inst segmentBounds {
+    Segment = `Segment0 + `Segment1 + `Segment2 + `Segment3 + `Segment4 + `Segment5 + `Segment6 + `Segment7 + `Segment8 + `Segment9
+    `Segment0.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment0.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment0.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment0.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment1.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment1.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment1.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment1.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment2.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment2.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment2.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment2.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment3.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment3.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment3.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment3.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment4.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment4.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment4.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment4.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment5.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment5.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment5.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment5.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment6.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment6.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment6.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment6.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment7.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment7.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment7.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment7.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment8.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment8.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment8.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment8.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment9.x1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment9.x2 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment9.y1 in (0+1+2+3+4+5+6+7+8+9+10)
+    `Segment9.y2 in (0+1+2+3+4+5+6+7+8+9+10)
+}
+
 run {
     wellformed
-    segmentLength[0, 3]
-} for 1 Segment, 10 Int
+    segmentLength[5, 5]
+} for 10 Segment, 6 Int for {segmentBounds}
