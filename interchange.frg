@@ -36,10 +36,7 @@ pred segmentLength[minLength: Int, maxLength: Int] {
 }
 
 pred next_connected {
-    all s, p: Segment | s.next = p implies {
-        p.x1 = s.x2
-        p.y1 = s.y2
-    }
+    all s: Segment | some p: Segment | (s.next = p implies (p.x1 = s.x2 and p.y1 = s.y2))
 }
 
 pred no_self_connection {
