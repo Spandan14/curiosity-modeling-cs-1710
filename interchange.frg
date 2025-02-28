@@ -2,14 +2,14 @@
 
 option no_overflow true
 option run_sterling "segment_vis.js"
+option sb 100
 
 sig Segment {
     x1: one Int,
     y1: one Int,
     x2: one Int,
     y2: one Int,
-    // prev: one Segment,
-    next: one Segment
+    next: lone Segment
 }
 
 sig Dx {
@@ -36,13 +36,13 @@ pred segmentLength[minLength: Int, maxLength: Int] {
 }
 
 pred next_connected {
-    all s: Segment | some p: Segment | (s.next = p implies (p.x1 = s.x2 and p.y1 = s.y2))
+    // all s: Segment | some p: Segment | (s.next = p implies (p.x1 = s.x2 and p.y1 = s.y2))
+    all p, q: Segment | (p.next = q implies (p.x2 = q.x1 and p.y2 = q.y1))
 }
 
 pred no_self_connection {
     no s: Segment | {
         s.next = s
-        // s.prev != s
     }
 }
 
@@ -53,15 +53,21 @@ pred disj_endpoints {
     }
 }
 
-pred curvature {
+pred curvature[maxDotProduct: Int] {
     // {sum s : Segment | sum[divide[multiply[10, subtract[s.y2, s.y1]], subtract[s.x2, s.x1]]]} = 0
     all s : Segment | {
-        let dx1 = s.x1 - s.x2, dy1 = s.y1 - s.y2,
-            dx2 = s.next.x2 - s.next.x1, dy2 = s.next.y2 - s.next.y1 | {
-                add[multiply[dx1, dx2], multiply[dy1, dy2]] < 0
+        let dx1 = subtract[s.x1, s.x2], dy1 = subtract[s.y1, s.y2],
+            dx2 = subtract[s.next.x2, s.next.x1], dy2 = subtract[s.next.y2, s.next.y1] | {
+                add[multiply[dx1, dx2], multiply[dy1, dy2]] < maxDotProduct
             }
     }
 }
+
+pred distance[maxDistance: Int] {
+    {sum s : Segment | sum[add[multiply[subtract[s.x2, s.x1], subtract[s.x2, s.x1]], 
+                               multiply[subtract[s.y2, s.y1], subtract[s.y2, s.y1]]]]} 
+                               < maxDistance 
+} 
 
 inst segmentBounds {
     Segment = `Segment0 + `Segment1 + `Segment2 + `Segment3 + `Segment4 + `Segment5 + `Segment6 + `Segment7 + `Segment8 + `Segment9
@@ -93,10 +99,11 @@ inst segmentBounds {
     `Dy4.dy = 4
     `Dy5.dy = 5
     
-
-    `Segment0.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    `Segment0.x1 in (0) 
+    `Segment0.y1 in (0)
+    // `Segment0.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment0.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    `Segment0.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    // `Segment0.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment0.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment1.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment1.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
@@ -111,9 +118,9 @@ inst segmentBounds {
     `Segment3.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment3.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment4.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    `Segment4.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    // `Segment4.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment4.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    `Segment4.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    // `Segment4.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment5.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment5.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment5.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
@@ -131,9 +138,13 @@ inst segmentBounds {
     `Segment8.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment8.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment9.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    `Segment9.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    // `Segment9.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment9.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    `Segment9.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    // `Segment9.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    `Segment4.x2 in (10)
+    `Segment4.y2 in (5)
+    `Segment9.x2 in (15) 
+    `Segment9.y2 in (15)
 
     `Segment0.next = `Segment1
     `Segment1.next = `Segment2
@@ -144,7 +155,7 @@ inst segmentBounds {
     `Segment6.next = `Segment7
     `Segment7.next = `Segment8
     `Segment8.next = `Segment9
-    `Segment9.next = `Segment0
+    // `Segment9.next = `Segment0
 }
 
 run {
@@ -153,6 +164,7 @@ run {
     next_connected
     no_self_connection
     disj_endpoints
-    // curvature
+    curvature[-1]
+    // distance[150]
     segmentLength[1, 5]
 } for 10 Segment, 10 Int for {segmentBounds}
