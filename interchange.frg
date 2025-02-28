@@ -67,7 +67,36 @@ pred distance[maxDistance: Int] {
     {sum s : Segment | sum[add[multiply[subtract[s.x2, s.x1], subtract[s.x2, s.x1]], 
                                multiply[subtract[s.y2, s.y1], subtract[s.y2, s.y1]]]]} 
                                < maxDistance 
-} 
+}
+
+pred hit_endpoint[x: Int, y: Int] {
+    some s: Segment | {
+        x = s.x2 and y = s.y2
+    }
+}
+
+pred fully_connected {
+    one s : Segment | {
+        no s.next 
+    }
+    one s : Segment | {
+        no r: Segment | r.next = s
+    }
+}
+
+pred overall_start[x: Int, y: Int] {
+    one s : Segment | {
+        no r : Segment | r.next = s
+        x = s.x1 and y = s.y1
+    }
+}
+
+pred overall_end[x: Int, y: Int] {
+    one s : Segment | {
+        no s.next
+        x = s.x2 and y = s.y2
+    }
+}
 
 inst segmentBounds {
     Segment = `Segment0 + `Segment1 + `Segment2 + `Segment3 + `Segment4 + `Segment5 + `Segment6 + `Segment7 + `Segment8 + `Segment9
@@ -99,11 +128,11 @@ inst segmentBounds {
     `Dy4.dy = 4
     `Dy5.dy = 5
     
-    `Segment0.x1 in (0) 
-    `Segment0.y1 in (0)
-    // `Segment0.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    // `Segment0.x1 in (0) 
+    // `Segment0.y1 in (0)
+    `Segment0.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment0.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    // `Segment0.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    `Segment0.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment0.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment1.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment1.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
@@ -118,9 +147,9 @@ inst segmentBounds {
     `Segment3.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment3.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment4.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    // `Segment4.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    `Segment4.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment4.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    // `Segment4.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    `Segment4.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment5.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment5.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment5.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
@@ -138,23 +167,23 @@ inst segmentBounds {
     `Segment8.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment8.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment9.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    // `Segment9.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    `Segment9.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment9.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    // `Segment9.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    `Segment4.x2 in (10)
-    `Segment4.y2 in (5)
-    `Segment9.x2 in (15) 
-    `Segment9.y2 in (15)
+    `Segment9.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
+    // `Segment4.x2 in (10)
+    // `Segment4.y2 in (5)
+    // `Segment9.x2 in (15) 
+    // `Segment9.y2 in (15)
 
-    `Segment0.next = `Segment1
-    `Segment1.next = `Segment2
-    `Segment2.next = `Segment3
-    `Segment3.next = `Segment4
-    `Segment4.next = `Segment5
-    `Segment5.next = `Segment6
-    `Segment6.next = `Segment7
-    `Segment7.next = `Segment8
-    `Segment8.next = `Segment9
+    // `Segment0.next = `Segment1
+    // `Segment1.next = `Segment2
+    // `Segment2.next = `Segment3
+    // `Segment3.next = `Segment4
+    // `Segment4.next = `Segment5
+    // `Segment5.next = `Segment6
+    // `Segment6.next = `Segment7
+    // `Segment7.next = `Segment8
+    // `Segment8.next = `Segment9
     // `Segment9.next = `Segment0
 }
 
@@ -164,7 +193,12 @@ run {
     next_connected
     no_self_connection
     disj_endpoints
-    curvature[-1]
-    // distance[150]
-    segmentLength[1, 5]
+    curvature[1]
+    // distance[200]
+    segmentLength[1, 8]
+    hit_endpoint[10, 5]
+    hit_endpoint[5, 10]
+    fully_connected
+    overall_start[0, 0]
+    overall_end[15, 15]
 } for 10 Segment, 10 Int for {segmentBounds}
