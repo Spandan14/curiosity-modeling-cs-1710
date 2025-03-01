@@ -75,6 +75,16 @@ pred hit_endpoint[x: Int, y: Int] {
     }
 }
 
+pred hit_startpoint[x: Int, y: Int] {
+    some s: Segment | {
+        x = s.x1 and y = s.y1
+    }
+}
+
+pred hit_point[x: Int, y: Int] {
+    hit_startpoint[x, y] or hit_endpoint[x, y]
+}
+
 pred fully_connected {
     one s : Segment | {
         no s.next 
@@ -104,35 +114,6 @@ pred overall_end[x: Int, y: Int] {
 inst segmentBounds {
     Segment = `Segment0 + `Segment1 + `Segment2 + `Segment3 + `Segment4 + `Segment5 + `Segment6 + `Segment7 + `Segment8 + `Segment9
 
-    Dx = `DxM5 + `DxM4 + `DxM3 + `DxM2 + `DxM1 + `Dx0 + `Dx1 + `Dx2 + `Dx3 + `Dx4 + `Dx5
-    Dy = `DyM5 + `DyM4 + `DyM3 + `DyM2 + `DyM1 + `Dy0 + `Dy1 + `Dy2 + `Dy3 + `Dy4 + `Dy5
-
-    `DxM5.dx = -5
-    `DxM4.dx = -4
-    `DxM3.dx = -3
-    `DxM2.dx = -2
-    `DxM1.dx = -1
-    `Dx0.dx = 0
-    `Dx1.dx = 1
-    `Dx2.dx = 2
-    `Dx3.dx = 3
-    `Dx4.dx = 4
-    `Dx5.dx = 5
-
-    `DyM5.dy = -5
-    `DyM4.dy = -4
-    `DyM3.dy = -3
-    `DyM2.dy = -2
-    `DyM1.dy = -1
-    `Dy0.dy = 0
-    `Dy1.dy = 1
-    `Dy2.dy = 2
-    `Dy3.dy = 3 
-    `Dy4.dy = 4
-    `Dy5.dy = 5
-    
-    // `Segment0.x1 in (0) 
-    // `Segment0.y1 in (0)
     `Segment0.x1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment0.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment0.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
@@ -173,35 +154,60 @@ inst segmentBounds {
     `Segment9.x2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment9.y1 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
     `Segment9.y2 in (0+1+2+3+4+5+6+7+8+9+10+11+12+13+14+15)
-    // `Segment4.x2 in (10)
-    // `Segment4.y2 in (5)
-    // `Segment9.x2 in (15) 
-    // `Segment9.y2 in (15)
 
-    // `Segment0.next = `Segment1
-    // `Segment1.next = `Segment2
-    // `Segment2.next = `Segment3
-    // `Segment3.next = `Segment4
-    // `Segment4.next = `Segment5
-    // `Segment5.next = `Segment6
-    // `Segment6.next = `Segment7
-    // `Segment7.next = `Segment8
-    // `Segment8.next = `Segment9
-    // `Segment9.next = `Segment0
+    Dx = `DxM8 + `DxM7 + `DxM6 + `DxM5 + `DxM4 + `DxM3 + `DxM2 + `DxM1 + `Dx0 + `Dx1 + `Dx2 + `Dx3 + `Dx4 + `Dx5 + `Dx6 + `Dx7 + `Dx8
+    Dy = `DyM8 + `DyM7 + `DyM6 + `DyM5 + `DyM4 + `DyM3 + `DyM2 + `DyM1 + `Dy0 + `Dy1 + `Dy2 + `Dy3 + `Dy4 + `Dy5 + `Dy6 + `Dy7 + `Dy8
+
+    // Dx = `DxM5 + `DxM4 + `DxM3 + `DxM2 + `DxM1 + `Dx0 + `Dx1 + `Dx2 + `Dx3 + `Dx4 + `Dx5
+    // Dy = `DyM5 + `DyM4 + `DyM3 + `DyM2 + `DyM1 + `Dy0 + `Dy1 + `Dy2 + `Dy3 + `Dy4 + `Dy5
+
+    `DxM8.dx = -8
+    `DxM7.dx = -7
+    `DxM6.dx = -6
+    `DxM5.dx = -5
+    `DxM4.dx = -4
+    `DxM3.dx = -3
+    `DxM2.dx = -2
+    `DxM1.dx = -1
+    `Dx0.dx = 0
+    `Dx1.dx = 1
+    `Dx2.dx = 2
+    `Dx3.dx = 3
+    `Dx4.dx = 4
+    `Dx5.dx = 5
+    `Dx6.dx = 6
+    `Dx7.dx = 7
+    `Dx8.dx = 8
+
+    `DyM8.dy = -8
+    `DyM7.dy = -7
+    `DyM6.dy = -6
+    `DyM5.dy = -5
+    `DyM4.dy = -4
+    `DyM3.dy = -3
+    `DyM2.dy = -2
+    `DyM1.dy = -1
+    `Dy0.dy = 0
+    `Dy1.dy = 1
+    `Dy2.dy = 2
+    `Dy3.dy = 3
+    `Dy4.dy = 4
+    `Dy5.dy = 5
+    `Dy6.dy = 6
+    `Dy7.dy = 7
+    `Dy8.dy = 8
 }
 
 run {
-    // wellformed
-    // prev_connected
     next_connected
     no_self_connection
     disj_endpoints
-    curvature[1]
-    distance[200]
-    segmentLength[1, 8]
-    hit_endpoint[10, 5]
-    hit_endpoint[5, 10]
-    fully_connected
+    // curvature[30]
+    // distance[400]
+    segmentLength[1, 12]
+    hit_point[5, 10]
+    hit_point[10, 5]
     overall_start[0, 0]
     overall_end[15, 15]
+    fully_connected
 } for 10 Segment, 10 Int for {segmentBounds}
