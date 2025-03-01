@@ -81,6 +81,9 @@ pred fully_connected {
     }
     one s : Segment | {
         no r: Segment | r.next = s
+        all t: Segment | t != s implies {
+            reachable[t, s, next]
+        } 
     }
 }
 
@@ -194,7 +197,7 @@ run {
     no_self_connection
     disj_endpoints
     curvature[1]
-    // distance[200]
+    distance[200]
     segmentLength[1, 8]
     hit_endpoint[10, 5]
     hit_endpoint[5, 10]
